@@ -1,0 +1,20 @@
+name: Build XtreamVisionPro
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build IPK
+      run: |
+        mkdir -p tmp
+        tar -czvf data.tar.gz -C XtreamVisionPro .
+        echo "2.0" > debian-binary
+        ar r XtreamVisionPro.ipk debian-binary data.tar.gz control.tar.gz
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: XtreamVisionPro
+        path: XtreamVisionPro.ipk
